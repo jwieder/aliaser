@@ -1,0 +1,20 @@
+#This launches a service to keep secondary IP addresses online for systemd-based RHEL distros hosted with AWS EC2
+
+[Unit]
+Description=Assigning Secondary IPs to NIC
+Documentation=http://www.joshwieder.net/2015/08/assigning-multiple-ip-addresses-to.html
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+
+RemainAfterExit=no
+
+ExecStart=/usr/libexec/aliasing start
+ExecReload=/usr/libexec/aliasing reload
+ExecStop=/usr/libexec/aliasing stop
+
+StandardOutput=syslog
+StandardError=syslog
+

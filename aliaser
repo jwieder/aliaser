@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# ----
+# Resolve issues with IP aliasing for Amazon EC2 linux virtual machines
+# ----
+#
+
+
+if [ $# -lt 1 ]
+then
+        echo "No command specified"  
+	echo "Usage: $0 start, $0 stop, $0 restart or $0 print"
+	echo "Execute $0 -h or $0 help for more detailed usage information"
+        exit
+fi
+
+case "$1" in
+
+'-h') printf "\nAliaser v0.01\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n\n"
+	;;
+
+'version') printf "\nAliaser v0.01\n©2015 Josh Wieder\nhttp://www.joshwieder.net/\n\n"
+	;;
+
+'start') MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
+	IP=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
+	for ip in ${IP[@]:1}; 
+	do 
+		echo "Adding IP: $ip"
+		ip addr add dev eth0 $ip/20
+	done
+	;;
+
+'restart') MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
+	IP=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
+	for ip in ${IP[@]:1}; 
+	do 
+		echo "Adding IP: $ip"
+		ip addr add dev eth0 $ip/20
+	done
+	;;
+
+'stop') service network restart
+	;;
+
+print) MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
+        PRIVATE=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
+        for priv in ${PRIVATE[@]:1};
+        do 
+		printf "Your assigned secondary private IP addresses are:  %s\n" "$priv"
+        done
+        
+	PUBLIC=($(curl -s -f http://169.254.169.254/latest/meta-data/public-ipv4))
+        printf "Your assigned secondary public IP addresses are:  %s\n" "$PUBLIC";
+        ;;
+
+*) echo "Invalid option"
+	;;
+esac
