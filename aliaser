@@ -9,7 +9,7 @@
 if [ $# -lt 1 ]
 then
         echo "No command specified"  
-	echo "Usage: $0 start, $0 stop, $0 restart or $0 print"
+	echo "Usage: $0 start, $0 stop, $0 restart, $0 print or $0 test"
 	echo "Execute $0 -h or $0 help for more detailed usage information"
         exit
 fi
@@ -47,7 +47,7 @@ function private-loop {
 
 case "$1" in
 
-'-h' | '-H' | 'help') printf "\nAliaser v0.01\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n\n"
+'-h' | '-H' | 'help') printf "\nAliaser v0.01\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n$0 test\n\n"
 	;;
 
 'version' | '-v' | '-V') printf "aliaser v0.01
@@ -98,6 +98,6 @@ conditions - see LICENSE for details.\n\n"
  	printf "Secondary public IP: %s\n" "$curltest"
 	;;
 
-*) printf "Invalid option"
+*) printf "Invalid option - try $0 -h or $0 help for correct usage"
 	;;
 esac

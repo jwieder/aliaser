@@ -51,6 +51,12 @@ The following features are going to be added in the immediate future (next coupl
            sudo ./aliaser restart    Adds routes for secondary IPs to the routing table (ATM for service execution purposes only)
            sudo ./aliaser stop       Removes secondary IP routers and restarts network service
         	./aliaser print      Prints list of secondary private and Public IP address assigned to this instance
+		./aliaser test	     Verifies route additions by querying an outside host
+
+### Bugs & Known Issues
+
+The output of `curl http://169.254.169.254/latest/meta-data/public-ipv4` has proven unpredictable. Unfortunately the Primary Public IP filed for
+`./aliaser print` initially relied on this EC2 API call. I am working on formatting another option that will produce stable output.
 
 ### Licensing and Copyright
 
