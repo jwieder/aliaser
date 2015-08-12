@@ -14,6 +14,13 @@ then
         exit
 fi
 
+#echo -n "What is the name of the network alias you would like to bind secondary IPs to? (eth0, eth1, etc): "
+#read interface
+#printf "\n"
+#declare -a ETHINT=($interface)
+
+#case $ETHINT in 
+
 function mac-grab {
 	MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
 }
@@ -26,6 +33,10 @@ function private-grab {
 	PRIVATE=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
 }
 
+function primary-private-grab {
+	PRIMARYPRIV=($(curl -s -f http://169.254.169.254/latest/meta-data/local-ipv4))
+}
+
 function private-loop {
 	for priv in ${PRIVATE[@]:1};
         do
@@ -36,10 +47,10 @@ function private-loop {
 
 case "$1" in
 
-'-h') printf "\nAliaser v0.01\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n\n"
+'-h' | '-H' | 'help') printf "\nAliaser v0.01\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n\n"
 	;;
 
-'version') printf "aliaser v0.01
+'version' | '-v' | '-V') printf "aliaser v0.01
 -----------------------------------
 ©2015 Josh Wieder\nhttp://www.joshwieder.net/\njosh.wieder@live.com
 -----------------------------------
@@ -55,7 +66,8 @@ conditions - see LICENSE for details.\n\n"
 	private-loop
 	;;
 
-'restart') mac-grab
+'restart') service network restart
+	mac-grab
 	private-grab        
 	private-loop
 	;;
@@ -63,17 +75,29 @@ conditions - see LICENSE for details.\n\n"
 'stop') service network restart
 	;;
 
-print) mac-grab
+'print' | '-p' | '-P') mac-grab
+	
+	primary-private-grab
+	printf "Primary private IPs:  %s\n" "$PRIMARYPRIV"
+
 	private-grab
         for priv in ${PRIVATE[@]:1};
-        do 
-		printf "Your assigned secondary private IP addresses are:  %s\n" "$priv"
-        done
-        
-	public-grab
-        printf "Your assigned secondary public IP addresses are:  %s\n" "$PUBLIC";
-        ;;
+	do
+		printf "Secondary Private IP:  %s\n" "$priv" 
+	done
 
-*) echo "Invalid option"
+   	public-grab
+        printf "Primary public IP:  %s\n\n" "$PUBLIC";
+#	printf "Interface:  %s\n" "$ETHINT";
+
+	;;
+
+'test' | 'verify')  mac-grab
+	private-grab
+	curltest=$(curl -s -f --interface ${PRIVATE[@]:1} ifconfig.me)
+ 	printf "Secondary public IP: %s\n" "$curltest"
+	;;
+
+*) printf "Invalid option"
 	;;
 esac
