@@ -19,8 +19,16 @@ case "$1" in
 '-h') printf "\nAliaser v0.01\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n\n"
 	;;
 
-'version') printf "\nAliaser v0.01\n©2015 Josh Wieder\nhttp://www.joshwieder.net/\n\n"
-	;;
+'version') printf "\naliaser v0.01
+-----------------------------------
+©2015 Josh Wieder\nhttp://www.joshwieder.net/\njosh.wieder@live.com
+-----------------------------------
+aliaser comes with ABSOLUTELY NO WARRANTY.
+This is free software made available through
+the GNU General Public License v2. You are
+welcome to redistribute it under certain
+conditions - see LICENSE for details.\n\n"
+        ;;
 
 'start') MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
 	IP=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
