@@ -1,5 +1,13 @@
 # aliaser
-aliaser v0.01 
+aliaser v0.01
+
+Copyright ©2015 Josh Wieder
+
+http://www.joshwieder.net/
+
+josh.wieder@live.com
+
+PGP Key 0x30D2ABDB2DF72435
 
 A service written in bash to resolve ongoing issues with IP aliasing when using Amazon EC2 virtual machines without the benefit of ec2-net-utils.
 
@@ -43,3 +51,21 @@ The following features are going to be added in the immediate future (next coupl
         ./aliaser restart    Adds routes for secondary IPs to the routing table
         ./aliaser stop       Removes secondary IP routers and restarts network service
         ./aliaser print      Prints list of secondary private and Public IP address assigned to this instance
+
+### Licensing and Copyright
+
+Copyright ©2015 Josh Wieder
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
