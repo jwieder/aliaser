@@ -14,12 +14,32 @@ then
         exit
 fi
 
+function mac-grab {
+	MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
+}
+
+function public-grab {
+	PUBLIC=($(curl -s -f http://169.254.169.254/latest/meta-data/public-ipv4))
+}
+
+function private-grab {
+	PRIVATE=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
+}
+
+function private-loop {
+	for priv in ${PRIVATE[@]:1};
+        do
+                echo "Adding IP: $priv"
+                ip addr add dev eth0 $priv/20
+        done
+}
+
 case "$1" in
 
 '-h') printf "\nAliaser v0.01\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n\n"
 	;;
 
-'version') printf "\naliaser v0.01
+'version') printf "aliaser v0.01
 -----------------------------------
 ©2015 Josh Wieder\nhttp://www.joshwieder.net/\njosh.wieder@live.com
 -----------------------------------
@@ -30,35 +50,27 @@ welcome to redistribute it under certain
 conditions - see LICENSE for details.\n\n"
         ;;
 
-'start') MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
-	IP=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
-	for ip in ${IP[@]:1}; 
-	do 
-		echo "Adding IP: $ip"
-		ip addr add dev eth0 $ip/20
-	done
+'start') mac-grab
+	private-grab
+	private-loop
 	;;
 
-'restart') MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
-	IP=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
-	for ip in ${IP[@]:1}; 
-	do 
-		echo "Adding IP: $ip"
-		ip addr add dev eth0 $ip/20
-	done
+'restart') mac-grab
+	private-grab        
+	private-loop
 	;;
 
 'stop') service network restart
 	;;
 
-print) MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
-        PRIVATE=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
+print) mac-grab
+	private-grab
         for priv in ${PRIVATE[@]:1};
         do 
 		printf "Your assigned secondary private IP addresses are:  %s\n" "$priv"
         done
         
-	PUBLIC=($(curl -s -f http://169.254.169.254/latest/meta-data/public-ipv4))
+	public-grab
         printf "Your assigned secondary public IP addresses are:  %s\n" "$PUBLIC";
         ;;
 

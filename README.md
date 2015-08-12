@@ -45,12 +45,12 @@ The following features are going to be added in the immediate future (next coupl
 
 4. Execute aliaser using one of a variety of commands:
 
-        ./aliaser -h         Prints list of commands
-        ./aliaser version    Prints version and copyright information
-        ./aliaser start      Adds routes for secondary IPs to the routing table
-        ./aliaser restart    Adds routes for secondary IPs to the routing table
-        ./aliaser stop       Removes secondary IP routers and restarts network service
-        ./aliaser print      Prints list of secondary private and Public IP address assigned to this instance
+        	./aliaser -h         Prints list of commands
+        	./aliaser version    Prints version and copyright information
+           sudo ./aliaser start      Adds routes for secondary IPs to the routing table
+           sudo ./aliaser restart    Adds routes for secondary IPs to the routing table (ATM for service execution purposes only)
+           sudo ./aliaser stop       Removes secondary IP routers and restarts network service
+        	./aliaser print      Prints list of secondary private and Public IP address assigned to this instance
 
 ### Licensing and Copyright
 
