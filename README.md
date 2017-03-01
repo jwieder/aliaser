@@ -1,7 +1,7 @@
 # aliaser
 aliaser v0.01
 
-Copyright ©2015 Josh Wieder
+Copyright ©2017 Josh Wieder
 
 http://www.joshwieder.net/
 
@@ -76,7 +76,7 @@ The output of `curl http://169.254.169.254/latest/meta-data/public-ipv4` has pro
 
 ### Licensing and Copyright
 
-Copyright ©2015 Josh Wieder
+Copyright ©2017 Josh Wieder
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
