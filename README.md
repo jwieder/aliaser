@@ -1,8 +1,13 @@
 # aliaser
-aliaser v0.01
+
+aliaser v0.02
+
 Copyright ©2017 Josh Wieder
+
 http://www.joshwieder.net/
+
 josh.wieder@live.com
+
 PGP Key 0x30D2ABDB2DF72435
 
 A service written in bash to resolve ongoing issues with IP aliasing when using Amazon EC2 virtual machines without the benefit of ec2-net-utils.
