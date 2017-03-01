@@ -1,12 +1,8 @@
 # aliaser
 aliaser v0.01
-
 Copyright ©2017 Josh Wieder
-
 http://www.joshwieder.net/
-
 josh.wieder@live.com
-
 PGP Key 0x30D2ABDB2DF72435
 
 A service written in bash to resolve ongoing issues with IP aliasing when using Amazon EC2 virtual machines without the benefit of ec2-net-utils.
@@ -53,22 +49,27 @@ The following features are planned:
 
 8. `aliaser` will now load at boot time and can be managed like any other systemd service:
 
-    `#systemctl start aliaser.service`	Start `aliaser` service
-    `#systemctl stop aliaser.service`	Stop `aliaser` service
-    `#systemctl restart aliaser.service`	Restart `aliaser` service
-    `#systemctl disable aliaser.service`	Prevent `aliaser` from loading at boot
-    `#systemctl -l status aliaser.service`  View the status of `aliaser` service
+| Command                                | Description                          |
+| -------------------------------------- |:------------------------------------:|
+| `#systemctl start aliaser.service`     | Start aliaser service                |
+| `#systemctl stop aliaser.service`      |  Stop aliaser service                |
+| `#systemctl restart aliaser.service`   |  Restart aliaser service             |    
+| `#systemctl disable aliaser.service`   | Prevent aliaser from loading at boot |
+| `#systemctl -l status aliaser.service` | View the status of aliaser service   |
+
 
 9. Execute `aliaser` as a shell script using one of a variety of commands:
 
-    `./aliaser -h`          Prints list of commands
-    `./aliaser version`     Prints version and copyright information
-    `sudo ./aliaser start`       Adds routes for secondary IPs to the routing table
-    `sudo ./aliaser restart`     Adds routes for secondary IPs to the routing table (ATM for service execution purposes only)
-    `sudo ./aliaser stop`        Removes secondary IP routers and restarts network service
-    `./aliaser print`       Prints list of secondary private and Public IP address assigned to this instance
-    `./aliaser test`	Verifies route additions by querying an outside host
-
+| Command                  | Description                                                                                  |
+| ------------------------ |:--------------------------------------------------------------------------------------------:|
+| `./aliaser -h`           | Prints list of commands                                                                      |
+| `./aliaser version`      | Prints version and copyright information                                                     |
+| `sudo ./aliaser start`   | Adds routes for secondary IPs to the routing table                                           |    
+| `sudo ./aliaser restart` | Adds routes for secondary IPs to the routing table (ATM for service execution purposes only) |
+| `sudo ./aliaser stop`    | Removes secondary IP routers and restarts network service                                    |
+| `/aliaser print`         | Prints list of secondary private and Public IP address assigned to this instance             |
+| `/aliaser test`          | Verifies route additions by querying an outside host                                         |
+    
 ### Bugs & Known Issues
 
 The output of `curl http://169.254.169.254/latest/meta-data/public-ipv4` has proven unpredictable. Unfortunately the Primary Public IP filed for
