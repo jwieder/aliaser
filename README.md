@@ -23,11 +23,7 @@ A service written in bash to resolve ongoing issues with IP aliasing when using 
 
 ###To Do
 
-The following features are going to be added in the immediate future (next couple of days):
-
-- Add support for Debian/Ubuntu 
-
-- Both systemd & init script functionality to retain IP mappings across reboots and network service restarts (the included aliaser.service file is the beginning of this functionality)
+The following features are planned:
 
 - RPM installation
 
