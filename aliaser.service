@@ -3,18 +3,16 @@
 [Unit]
 Description=Assigning Secondary IPs to NIC
 Documentation=http://www.joshwieder.net/2015/08/assigning-multiple-ip-addresses-to.html
-After=network-online.target
+After=network.target remote-fs.target network-online.target
 
 [Service]
 Type=oneshot
 User=root
+RemainAfterExit=yes
 
-RemainAfterExit=no
+ExecStart=/usr/bin/aliaser start
+ExecReload=/usr/bin/aliaser reload
+ExecStop=/usr/bin/aliaser stop
 
-ExecStart=/usr/libexec/aliasing start
-ExecReload=/usr/libexec/aliasing reload
-ExecStop=/usr/libexec/aliasing stop
-
-StandardOutput=syslog
-StandardError=syslog
-
+[Install]
+WantedBy=multi-user.target
