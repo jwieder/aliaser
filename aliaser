@@ -41,8 +41,12 @@ function private-loop {
 	for priv in ${PRIVATE[@]:1};
         do
                 echo "Adding IP: $priv"
-                ip addr add dev eth0 $priv/20
+                ip addr add dev eth0 $priv/$SUBNET_CIDR_BLOCK
         done
+}
+
+function subnet-cidr-block-grab {
+  SUBNET_CIDR_BLOCK=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/subnet-ipv4-cidr-block | sed -e 's/^.*\///'))
 }
 
 case "$1" in
@@ -63,12 +67,14 @@ conditions - see LICENSE for details.\n\n"
 
 'start') mac-grab
 	private-grab
+  subnet-cidr-block-grab
 	private-loop
 	;;
 
 'restart') service network restart
 	mac-grab
 	private-grab        
+  subnet-cidr-block-grab
 	private-loop
 	;;
 
