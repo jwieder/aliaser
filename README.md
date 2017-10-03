@@ -1,7 +1,8 @@
 # aliaser
-aliaser v0.01
 
-Copyright ©2015 Josh Wieder
+aliaser v0.02
+
+Copyright ©2017 Josh Wieder
 
 http://www.joshwieder.net/
 
@@ -23,44 +24,65 @@ A service written in bash to resolve ongoing issues with IP aliasing when using 
 
 ###To Do
 
-The following features are going to be added in the immediate future (next couple of days):
-
-- Add support for Debian/Ubuntu 
-
-- Both systemd & init script functionality to retain IP mappings across reboots and network service restarts (the included aliaser.service file is the beginning of this functionality)
+The following features are planned:
 
 - RPM installation
 
 - Integration with ec2-api-tools
 
-### Instructions
+### Instructions for Red Hat Linux using systemd
 
 1. Ensure that you have assigned your preferred secondary private IP and secondary Elastic IP to your instance [as outlined here](http://www.joshwieder.net/2015/08/assigning-multiple-ip-addresses-to.html)
 
-2. Download the `aliaser` shell script
+2. Replicate `aliaser` using git or download as a .zip file
+ 
+3. On your server, copy the systemd service file `aliaser.service` to `/etc/systemd/system/aliaser.service`
 
-3. Assign the script an executable bit as follows:
+4. Copy the shell script `aliaser` to `/usr/bin/aliaser`
 
-       #chmod +x aliaser 
+5. Assign the script an executable bit to the shell script as follows:
 
-4. Execute aliaser using one of a variety of commands:
+       `#chmod +x /usr/bin/aliaser`
+       
+6. `aliaser` will is now installed! Start the `aliaser` service:
 
-        	./aliaser -h         Prints list of commands
-        	./aliaser version    Prints version and copyright information
-           sudo ./aliaser start      Adds routes for secondary IPs to the routing table
-           sudo ./aliaser restart    Adds routes for secondary IPs to the routing table (ATM for service execution purposes only)
-           sudo ./aliaser stop       Removes secondary IP routers and restarts network service
-        	./aliaser print      Prints list of secondary private and Public IP address assigned to this instance
-		./aliaser test	     Verifies route additions by querying an outside host
+	`#systemctl start aliaser.service`
 
+7. Configure your server to load `aliaser` at boot:
+
+	`#systemctl enable aliaser.service`
+
+8. `aliaser` will now load at boot time and can be managed like any other systemd service:
+
+| Command                                | Description                          |
+| -------------------------------------- |:------------------------------------:|
+| `#systemctl start aliaser.service`     | Start aliaser service                |
+| `#systemctl stop aliaser.service`      |  Stop aliaser service                |
+| `#systemctl restart aliaser.service`   |  Restart aliaser service             |    
+| `#systemctl disable aliaser.service`   | Prevent aliaser from loading at boot |
+| `#systemctl -l status aliaser.service` | View the status of aliaser service   |
+
+
+9. Execute `aliaser` as a shell script using one of a variety of commands:
+
+| Command                  | Description                                                                                  |
+| ------------------------ |:--------------------------------------------------------------------------------------------:|
+| `./aliaser -h`           | Prints list of commands                                                                      |
+| `./aliaser version`      | Prints version and copyright information                                                     |
+| `sudo ./aliaser start`   | Adds routes for secondary IPs to the routing table                                           |    
+| `sudo ./aliaser restart` | Adds routes for secondary IPs to the routing table (ATM for service execution purposes only) |
+| `sudo ./aliaser stop`    | Removes secondary IP routers and restarts network service                                    |
+| `/aliaser print`         | Prints list of secondary private and Public IP address assigned to this instance             |
+| `/aliaser test`          | Verifies route additions by querying an outside host                                         |
+    
 ### Bugs & Known Issues
 
 The output of `curl http://169.254.169.254/latest/meta-data/public-ipv4` has proven unpredictable. Unfortunately the Primary Public IP filed for
-`./aliaser print` initially relied on this EC2 API call. I am working on formatting another option that will produce stable output.
+`./aliaser print` initially relied on this EC2 API call. I am working on formatting another option that will produce stable output. This does not impact the actual functionality of the IP address allocation.
 
 ### Licensing and Copyright
 
-Copyright ©2015 Josh Wieder
+Copyright ©2017 Josh Wieder
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
