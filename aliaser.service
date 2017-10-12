@@ -10,9 +10,9 @@ Type=oneshot
 User=root
 RemainAfterExit=yes
 
-ExecStart=/usr/bin/aliaser start
-ExecReload=/usr/bin/aliaser reload
-ExecStop=/usr/bin/aliaser stop
+ExecStart=/usr/sbin/aliaser start
+ExecReload=/usr/sbin/aliaser reload
+ExecStop=/usr/sbin/aliaser stop
 
 [Install]
 WantedBy=multi-user.target
