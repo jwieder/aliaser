@@ -12,7 +12,7 @@ PGP Key 0x30D2ABDB2DF72435
 
 A service written in bash to resolve ongoing issues with IP aliasing when using Amazon EC2 virtual machines without the benefit of ec2-net-utils.
 
-###Features
+### Features
 
 - Adds and removes routing table entries on RHEL Amazon EC2 virtual machines to support the mapping of multiple public IP addresses to the same EC2 instance.
 
@@ -22,7 +22,7 @@ A service written in bash to resolve ongoing issues with IP aliasing when using 
 
 - Multiple IP mappings are supported
 
-###To Do
+### To Do
 
 The following features are planned:
 
