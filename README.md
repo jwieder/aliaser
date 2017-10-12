@@ -38,11 +38,11 @@ The following features are planned:
  
 3. On your server, copy the systemd service file `aliaser.service` to `/etc/systemd/system/aliaser.service`
 
-4. Copy the shell script `aliaser` to `/usr/bin/aliaser`
+4. Copy the shell script `aliaser` to `/usr/sbin/aliaser`
 
 5. Assign the script an executable bit to the shell script as follows:
 
-       `#chmod +x /usr/bin/aliaser`
+       `#chmod +x /usr/sbin/aliaser`
        
 6. `aliaser` will is now installed! Start the `aliaser` service:
 
@@ -79,6 +79,8 @@ The following features are planned:
 
 The output of `curl http://169.254.169.254/latest/meta-data/public-ipv4` has proven unpredictable. Unfortunately the Primary Public IP filed for
 `./aliaser print` initially relied on this EC2 API call. I am working on formatting another option that will produce stable output. This does not impact the actual functionality of the IP address allocation.
+
+Please be sure to install `curl` (through your package management tool) before installing aliaser
 
 ### Licensing and Copyright
 

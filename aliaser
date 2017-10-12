@@ -19,10 +19,18 @@ fi
 #printf "\n"
 #declare -a ETHINT=($interface)
 
-#case $ETHINT in 
+ETHINT=${ETHINT:-eth0}
 
 function mac-grab {
-	MAC_ADDR=$(ifconfig eth0 | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
+	MAC_ADDR=$(ip addr list $ETHINT | sed -n 's/.*link\/ether \([a-f0-9:]*\).*/\1/p')
+	if test -z "$MAC_ADDR" ; then
+	    MAC_ADDR=$(ifconfig $ETHINT | sed -n 's/.*ether \([a-f0-9:]*\).*/\1/p')
+	fi
+	if test -z "$MAC_ADDR" ; then
+	    echo "Can't determine mac address, giving up"
+	    exit 1
+	fi
+	MAC_ADDR=$(echo "$MAC_ADDR" | tr 'A-F' 'a-f')
 }
 
 function public-grab {
@@ -38,10 +46,11 @@ function primary-private-grab {
 }
 
 function private-loop {
+        local priv
 	for priv in ${PRIVATE[@]:1};
         do
                 echo "Adding IP: $priv"
-                ip addr add dev eth0 $priv/$SUBNET_CIDR_BLOCK
+                ip addr add dev $ETHINT $priv/$SUBNET_CIDR_BLOCK
         done
 }
 
