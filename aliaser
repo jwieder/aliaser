@@ -26,11 +26,11 @@ function mac-grab {
 }
 
 function public-grab {
-	PUBLIC=($(curl -s -f http://169.254.169.254/latest/meta-data/public-ipv4))
+	PUBLIC=($(TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"); curl -s -H "X-aws-ec2-metadata-token: $TOKEN" –v http://169.254.169.254/latest/meta-data/public-ipv4))
 }
 
 function private-grab {
-	PRIVATE=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
+	PRIVATE=($(TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"); curl -s -H "X-aws-ec2-metadata-token: $TOKEN" –v http://169.254.169.254/latest/meta-data/network/interfaces/macs/${MAC_ADDR}/local-ipv4s))
 }
 
 function primary-private-grab {
@@ -51,10 +51,10 @@ function subnet-cidr-block-grab {
 
 case "$1" in
 
-'-h' | '-H' | 'help') printf "\nAliaser v0.01\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n$0 test\n\n"
+'-h' | '-H' | 'help') printf "\nAliaser v0.02\nUsage: $0 -h\n$0 help\n$0 version\n$0 start\n$0 restart\n$0 stop\n$0 print\n$0 test\n\n"
 	;;
 
-'version' | '-v' | '-V') printf "aliaser v0.01
+'version' | '-v' | '-V') printf "aliaser v0.02
 -----------------------------------
 ©2015 Josh Wieder\nhttp://www.joshwieder.net/\njosh.wieder@live.com
 -----------------------------------
