@@ -26,11 +26,11 @@ function mac-grab {
 }
 
 function public-grab {
-	PUBLIC=($(curl -s -f http://169.254.169.254/latest/meta-data/public-ipv4))
+	PUBLIC=($(TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"); curl -s -H "X-aws-ec2-metadata-token: $TOKEN" –v http://169.254.169.254/latest/meta-data/public-ipv4))
 }
 
 function private-grab {
-	PRIVATE=($(curl -s -f http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC_ADDR/local-ipv4s))
+	PRIVATE=($(TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"); curl -s -H "X-aws-ec2-metadata-token: $TOKEN" –v http://169.254.169.254/latest/meta-data/network/interfaces/macs/${MAC_ADDR}/local-ipv4s))
 }
 
 function primary-private-grab {
